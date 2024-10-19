@@ -75,11 +75,6 @@
             <input type="text" class="form-control form-control-sm" id="numero_nomina" name="numero_nomina" value="{{ old('numero_nomina') }}">
             <div class="form-helper" style="font-size: 0.8rem;">Ingresa tu número de Nomina.</div>
         </div>
-        <div id="seccion-kiosko" class="mb-2" style="display: none;">
-            <label for="nombre_local" class="form-label" style="font-size: 0.9rem;">Nombre de tu Local (solo para Dueños de Kiosko)</label>
-            <input type="text" class="form-control form-control-sm" id="nombre_local" name="nombre_local" value="{{ old('nombre_local') }}">
-            <div class="form-helper" style="font-size: 0.8rem;">Ingresa tu nombre Local.</div>
-        </div>
         <!-- Datos vehiculares -->
         <h2 class="mb-3" style="font-size: 1.3rem;">Datos Vehiculares</h2>
 
@@ -165,7 +160,6 @@
         var usuarioRadios = document.querySelectorAll('input[name="usuario"]');
         var seccionAlumno = document.getElementById('seccion-alumno');
         var seccionEmpleado = document.getElementById('seccion-empleado');
-        var seccionkiosko = document.getElementById('seccion-kiosko');
         var tipoVehiculoRadios = document.querySelectorAll('input[name="tipo_vehiculo"]');
         var seccionVehiculo = document.getElementById('seccion-vehiculo');
 
@@ -174,24 +168,14 @@
                 if (this.value === 'Alumno') {
                 seccionAlumno.style.display = 'block';
                 seccionEmpleado.style.display = 'none'; // Asegura que se oculta la sección de Empleado si selecciona Alumno
-                seccionkiosko.style.display = 'none';
             }
             else if (this.value === 'Empleado') {
                 seccionEmpleado.style.display = 'block';
                 seccionAlumno.style.display = 'none'; // Asegura que se oculta la sección de Alumno si selecciona Empleado
-                seccionkiosko.style.display = 'none';
-
-            } else if (this.value === 'Kioskos') {
-                seccionkiosko.style.display = 'block';
+            } else {
                 seccionAlumno.style.display = 'none';
                 seccionEmpleado.style.display = 'none';
             }
-            // else
-            // {
-            //     seccionkiosko.style.display = 'none';
-            //     seccionAlumno.style.display = 'none';
-            //     seccionEmpleado.style.display = 'none';
-            // }
             });
         });
 
