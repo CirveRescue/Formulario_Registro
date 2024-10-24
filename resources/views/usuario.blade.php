@@ -6,7 +6,8 @@
 
     <ul>
         @foreach($usuarios as $usuario)
-            <li>{{ $usuario->nombre }} - <a href="{{ route('usuarios.show', $usuario->id) }}">Ver</a></li>
+            <li>{{ $usuario->Nombre }} - <a href="{{ route('usuarios.show', $usuario->id) }}">Ver</a></li>
         @endforeach
     </ul>
 @endsection
+

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('apellido_materno');  // Campo de texto para apellido materno
             $table->string('nombre');  // Campo de texto para nombre
             $table->string('telefono');  // Campo de texto para teléfono
-            $table->enum('usuario', ['Empleado', 'Alumno', 'Kioskos']);  // Enumeración con los tipos de usuarios
+            $table->enum('usuario', ['Empleado', 'Alumno', 'Kioskos']);  // Enumeración con los tipos de usuario
             $table->string('numero_control')->nullable(); // Solo si es Alumno
             $table->enum('tipo_vehiculo', ['Bicicleta', 'Motocicleta', 'Scooter eléctrico', 'Automóvil']);
             

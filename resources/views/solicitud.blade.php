@@ -16,8 +16,8 @@
         <h2 class="mb-4" style="font-size: 1.5rem;">FORMULARIO DE SOLICITUD VEHICULAR</h2>
 
         <div class="mb-2 position-relative">
-            <label for="correo_electronico" class="form-label" style="font-size: 0.9rem;">Correo electrónico <span class="required-mark">*</span></label>
-            <input type="email" class="form-control form-control-sm" id="correo_electronico" name="correo_electronico" value="{{ old('correo_electronico') }}" required>
+            <label for="Correo" class="form-label" style="font-size: 0.9rem;">Correo electrónico <span class="required-mark">*</span></label>
+            <input type="email" class="form-control form-control-sm" id="Correo" name="Correo" value="{{ old('Correo') }}" required>
             <div class="invalid-feedback">Por favor, ingresa un correo electrónico válido.</div>
         </div>
 
@@ -75,6 +75,7 @@
             <input type="text" class="form-control form-control-sm" id="numero_nomina" name="numero_nomina" value="{{ old('numero_nomina') }}">
             <div class="form-helper" style="font-size: 0.8rem;">Ingresa tu número de Nomina.</div>
         </div>
+
         <!-- Datos vehiculares -->
         <h2 class="mb-3" style="font-size: 1.3rem;">Datos Vehiculares</h2>
 
@@ -122,94 +123,85 @@
                     <div class="form-helper" style="font-size: 0.8rem;">Solo se permiten letras y números (sin espacios ni guiones).</div>
                 </div>
             </div>
-            </div>
-
-            <!-- Cargar imágenes -->
-            <div class="mb-2">
-                <label for="foto_ine_frontal" class="form-label" style="font-size: 0.9rem;">Fotografía de INE (Frente):</label>
-                <input type="file" class="form-control form-control-sm" id="foto_ine_frontal" name="foto_ine_frontal" accept="image/*">
-            </div>
-
-            <div class="mb-2">
-                <label for="foto_ine_trasera" class="form-label" style="font-size: 0.9rem;">Fotografía de INE (Reverso):</label>
-                <input type="file" class="form-control form-control-sm" id="foto_ine_trasera" name="foto_ine_trasera" accept="image/*">
-            </div>
-            <div class="mb-2">
-                <label for="foto_tarjeta_circulacion" class="form-label" style="font-size: 0.9rem;">Fotografía de Tarjeta de Circulación</label>
-                <input type="file" class="form-control  form-control-sm" id="foto_tarjeta_circulacion" name="foto_tarjeta_circulacion" accept="image/*">
-            </div>
-
-            <div class="mb-2">
-                <label for="foto_vehiculo" class="form-label" style="font-size: 0.9rem;">Foto del Vehículo</label>
-                <input type="file" class="form-control  form-control-sm" id="foto_vehiculo" name="foto_vehiculo" accept="image/*">
-            </div>
-            
-            <button type="submit" class="btn btn-primary btn-sm">Enviar Solicitud</button>
         </div>
 
+        <!-- Cargar imágenes -->
+        <div class="mb-2">
+            <label for="foto_ine_frontal" class="form-label" style="font-size: 0.9rem;">Fotografía de INE (Frente):</label>
+            <input type="file" class="form-control form-control-sm" id="foto_ine_frontal" name="foto_ine_frontal" accept="image/*">
+        </div>
 
+        <div class="mb-2">
+            <label for="foto_ine_trasera" class="form-label" style="font-size: 0.9rem;">Fotografía de INE (Reverso):</label>
+            <input type="file" class="form-control form-control-sm" id="foto_ine_trasera" name="foto_ine_trasera" accept="image/*">
+        </div>
+        <div class="mb-2">
+            <label for="foto_tarjeta_circulacion" class="form-label" style="font-size: 0.9rem;">Fotografía de Tarjeta de Circulación</label>
+            <input type="file" class="form-control form-control-sm" id="foto_tarjeta_circulacion" name="foto_tarjeta_circulacion" accept="image/*">
+        </div>
+
+        <div class="mb-2">
+            <label for="foto_vehiculo" class="form-label" style="font-size: 0.9rem;">Foto del Vehículo</label>
+            <input type="file" class="form-control form-control-sm" id="foto_vehiculo" name="foto_vehiculo" accept="image/*">
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-sm">Enviar Solicitud</button>
     </form>
 
+    <!-- JavaScript para la validación y manejo de formularios -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var usuarioRadios = document.querySelectorAll('input[name="usuario"]');
+            var seccionAlumno = document.getElementById('seccion-alumno');
+            var seccionEmpleado = document.getElementById('seccion-empleado');
+            var tipoVehiculoRadios = document.querySelectorAll('input[name="tipo_vehiculo"]');
+            var seccionVehiculo = document.getElementById('seccion-vehiculo');
 
+            usuarioRadios.forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    if (this.value === 'Alumno') {
+                        seccionAlumno.style.display = 'block';
+                        seccionEmpleado.style.display = 'none';
+                    } else if (this.value === 'Empleado') {
+                        seccionEmpleado.style.display = 'block';
+                        seccionAlumno.style.display = 'none';
+                    } else {
+                        seccionAlumno.style.display = 'none';
+                        seccionEmpleado.style.display = 'none';
+                    }
+                });
+            });
 
-<!-- Bootstrap JavaScript and form validation -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+            // Form validation
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var usuarioRadios = document.querySelectorAll('input[name="usuario"]');
-        var seccionAlumno = document.getElementById('seccion-alumno');
-        var seccionEmpleado = document.getElementById('seccion-empleado');
-        var tipoVehiculoRadios = document.querySelectorAll('input[name="tipo_vehiculo"]');
-        var seccionVehiculo = document.getElementById('seccion-vehiculo');
-
-        usuarioRadios.forEach(function (radio) {
-            radio.addEventListener('change', function () {
-                if (this.value === 'Alumno') {
-                seccionAlumno.style.display = 'block';
-                seccionEmpleado.style.display = 'none'; // Asegura que se oculta la sección de Empleado si selecciona Alumno
-            }
-            else if (this.value === 'Empleado') {
-                seccionEmpleado.style.display = 'block';
-                seccionAlumno.style.display = 'none'; // Asegura que se oculta la sección de Alumno si selecciona Empleado
-            } else {
-                seccionAlumno.style.display = 'none';
-                seccionEmpleado.style.display = 'none';
-            }
+                    form.classList.add('was-validated');
+                }, false);
             });
         });
 
-        // Form validation
-        var forms = document.querySelectorAll('.needs-validation');
-        Array.prototype.slice.call(forms).forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
+        function togglePlaca() {
+            var bicicleta = document.getElementById('bicicleta').checked;
+            var scooter = document.getElementById('scooter').checked;
+            var placa = document.getElementById('placa');
 
-                form.classList.add('was-validated');
-            }, false);
-        });
-    });
-
-    function togglePlaca() {
-        var bicicleta = document.getElementById('bicicleta').checked;
-        var scooter = document.getElementById('scooter').checked;
-        var placa = document.getElementById('placa');
-
-        if (bicicleta || scooter) {
-            placa.disabled = true; // Deshabilitar campo de placa
-            placa.value = ''; // Limpiar el valor del campo
-        } else {
-            placa.disabled = false; // Habilitar campo de placa
+            if (bicicleta || scooter) {
+                placa.disabled = true;  // Deshabilitar campo de placa
+                placa.value = '';       // Limpiar el valor del campo
+            } else {
+                placa.disabled = false;  // Habilitar campo de placa
+            }
         }
-    }
 
-    // Llamar a la función al cargar la página para asegurar el estado correcto
-    window.onload = function() {
-        togglePlaca();
-    };
-</script>
-
+        // Llamar a la función al cargar la página para asegurar el estado correcto
+        window.onload = function() {
+            togglePlaca();
+        };
+    </script>
 @endsection

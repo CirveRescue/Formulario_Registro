@@ -9,16 +9,13 @@ class Solicitud extends Model
 {
     use HasFactory;
 
-    
     protected $table = 'solicitudes';
 
-    
+    // Updated $fillable fields to match the correct database structure
     protected $fillable = [
-        'correo_electronico', 
-        'apellido_paterno', 
-        'apellido_materno', 
-        'nombre', 
-        'telefono', 
+        'Correo',  // Assuming you meant this field to be consistent
+        'Nombre',  // Consistent with the user table structure
+        'Telefono',  // Consistent with the user table structure
         'usuario', 
         'numero_control', 
         'tipo_vehiculo', 

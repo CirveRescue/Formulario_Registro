@@ -9,28 +9,12 @@ class Usuario extends Model
 {
     use HasFactory;
 
-    protected $table = 'usuarios';  // Nombre de la tabla
+    protected $table = 'usuario';  // Nombre de la tabla correcto
 
-    // Campos que pueden ser llenados
+    // Campos que pueden ser llenados, de acuerdo con la estructura de la tabla
     protected $fillable = [
-        'correo_electronico', 
-        'apellido_paterno', 
-        'apellido_materno', 
-        'nombre', 
-        'telefono', 
-        'tipo_usuario', 
-        'numero_control'
+        'Correo', 
+        'Nombre', 
+        'Telefono', 
     ];
-
-    // Relación: un usuario puede tener muchos vehículos
-    public function vehiculos()
-    {
-        return $this->hasMany(Vehiculo::class, 'usuario_id');
-    }
-
-    // Relación: un usuario puede tener una información adicional
-    public function informacionAdicional()
-    {
-        return $this->hasOne(InformacionAdicional::class, 'usuario_id');
-    }
 }
