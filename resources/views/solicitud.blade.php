@@ -9,6 +9,12 @@
         <i class="bi bi-check-circle-fill"></i> {{ session('success') }}
     </div>
     @endif
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+
 
     <!-- Sección de datos personales -->
     <form action="{{ route('solicitud.store') }}" method="POST" enctype="multipart/form-data" class="form-section needs-validation" novalidate style="max-width: 700px; margin: auto;">
@@ -144,7 +150,7 @@
             <label for="foto_vehiculo" class="form-label" style="font-size: 0.9rem;">Foto del Vehículo</label>
             <input type="file" class="form-control form-control-sm" id="foto_vehiculo" name="foto_vehiculo" accept="image/*">
         </div>
-        
+
         <button type="submit" class="btn btn-primary btn-sm">Enviar Solicitud</button>
     </form>
 
