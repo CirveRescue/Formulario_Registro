@@ -14,7 +14,20 @@
         {{ session('error') }}
     </div>
     @endif
+    @php
+    // Obtener los datos desde la sesión o la variable 'data' pasada desde el controlador
+    $data = session('data', []);  // Recupera la información de la sesión, si está disponible.
 
+    // Separar el nombre completo (si está disponible)
+    $nombreCompleto = $data['nombre'] ?? '';
+    $matricula = $data['matricula'] ?? '';
+    $semestre = $data['semestre'] ?? '';
+    $nombreParts = explode(' ', $nombreCompleto);
+    $primerNombre = $nombreParts[0] ?? '';
+    $segundonombre = $nombreParts[1] ?? '';
+    $apellidoPaterno = $nombreParts[2] ?? '';
+    $apellidoMaterno = $nombreParts[3] ?? '';
+@endphp
 
     <!-- Sección de datos personales -->
     <form action="{{ route('solicitud.store') }}" method="POST" enctype="multipart/form-data" class="form-section needs-validation" novalidate style="max-width: 700px; margin: auto;">
@@ -23,27 +36,27 @@
 
         <div class="mb-2 position-relative">
             <label for="Correo" class="form-label" style="font-size: 0.9rem;">Correo electrónico <span class="required-mark">*</span></label>
-            <input type="email" class="form-control form-control-sm" id="Correo" name="Correo" value="{{ old('Correo') }}" required>
+            <input type="email" class="form-control form-control-sm" id="Correo" name="Correo" value="{{ 'za'.$matricula.'@zapopan.tecmm.edu.mx' }}" required>
             <div class="invalid-feedback">Por favor, ingresa un correo electrónico válido.</div>
         </div>
 
         <div class="row">
             <div class="col-md-6 mb-2">
                 <label for="apellido_paterno" class="form-label" style="font-size: 0.9rem;">Apellido paterno <span class="required-mark">*</span></label>
-                <input type="text" class="form-control form-control-sm" id="apellido_paterno" name="apellido_paterno" value="{{ old('apellido_paterno') }}" required>
+                <input type="text" class="form-control form-control-sm" id="apellido_paterno" name="apellido_paterno" value="{{ $apellidoPaterno }}" >
                 <div class="invalid-feedback">Este campo es obligatorio.</div>
             </div>
 
             <div class="col-md-6 mb-2">
                 <label for="apellido_materno" class="form-label" style="font-size: 0.9rem;">Apellido materno <span class="required-mark">*</span></label>
-                <input type="text" class="form-control form-control-sm" id="apellido_materno" name="apellido_materno" value="{{ old('apellido_materno') }}" required>
+                <input type="text" class="form-control form-control-sm" id="apellido_materno" name="apellido_materno" value="{{ $apellidoMaterno }}" required>
                 <div class="invalid-feedback">Este campo es obligatorio.</div>
             </div>
         </div>
 
         <div class="mb-2">
             <label for="nombre" class="form-label" style="font-size: 0.9rem;">Nombre(s) <span class="required-mark">*</span></label>
-            <input type="text" class="form-control form-control-sm" id="nombre" name="nombre" value="{{ old('nombre') }}" required>
+            <input type="text" class="form-control form-control-sm" id="nombre" name="nombre" value="{{ $primerNombre.' '.$segundonombre }}" required>
             <div class="invalid-feedback">Este campo es obligatorio.</div>
         </div>
 
@@ -62,7 +75,8 @@
                 <label class="form-check-label" for="empleado" style="font-size: 0.9rem;">Empleado</label>
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="alumno" name="usuario" value="Alumno" {{ old('usuario') == 'Alumno' ? 'checked' : '' }} required>
+                <input type="radio" class="form-check-input" id="alumno" name="usuario" value="Alumno"
+                    {{ old('usuario') == 'Alumno' || $semestre ? 'checked' : '' }} required>
                 <label class="form-check-label" for="alumno" style="font-size: 0.9rem;">Alumno</label>
             </div>
             <div class="form-check">
@@ -73,13 +87,18 @@
 
         <div id="seccion-alumno" class="mb-2" style="display: none;">
             <label for="numero_control" class="form-label" style="font-size: 0.9rem;">Número de control (solo para alumnos)</label>
-            <input type="text" class="form-control form-control-sm" id="numero_control" name="numero_control" value="{{ old('numero_control') }}">
+            <input type="text" class="form-control form-control-sm" id="numero_control" name="numero_control" value="{{ old('numero_control', $matricula) }}">
             <div class="form-helper" style="font-size: 0.8rem;">Ingresa tu número de matrícula si eres alumno.</div>
         </div>
         <div id="seccion-empleado" class="mb-2" style="display: none;">
             <label for="numero_nomina" class="form-label" style="font-size: 0.9rem;">Número de Nomina (solo para Administrativos y Docentes)</label>
             <input type="text" class="form-control form-control-sm" id="numero_nomina" name="numero_nomina" value="{{ old('numero_nomina') }}">
             <div class="form-helper" style="font-size: 0.8rem;">Ingresa tu número de Nomina.</div>
+        </div>
+        <div id="seccion-kiosko" class="mb-2" style="display: none;">
+            <label for="nombre_local" class="form-label" style="font-size: 0.9rem;">Nombre de Local (Solo para personas de Kioskos)</label>
+            <input type="text" class="form-control form-control-sm" id="nombre_local" name="nombre_local" value="{{ old('nombre_local') }}">
+            <div class="form-helper" style="font-size: 0.8rem;">Ingresa El nombre del Local.</div>
         </div>
 
         <!-- Datos vehiculares -->
@@ -157,23 +176,36 @@
     <!-- JavaScript para la validación y manejo de formularios -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+        var semestre = @json($semestre);
+
+        // Si el semestre tiene un valor (indicado que es un alumno), se muestra la sección de número de control
+        if (semestre) {
+            document.getElementById('seccion-alumno').style.display = 'block';
+        }
+    });
+        document.addEventListener('DOMContentLoaded', function () {
             var usuarioRadios = document.querySelectorAll('input[name="usuario"]');
             var seccionAlumno = document.getElementById('seccion-alumno');
             var seccionEmpleado = document.getElementById('seccion-empleado');
             var tipoVehiculoRadios = document.querySelectorAll('input[name="tipo_vehiculo"]');
             var seccionVehiculo = document.getElementById('seccion-vehiculo');
+            var seccionKioskos = document.getElementById('seccion-kiosko');
 
             usuarioRadios.forEach(function (radio) {
                 radio.addEventListener('change', function () {
                     if (this.value === 'Alumno') {
                         seccionAlumno.style.display = 'block';
                         seccionEmpleado.style.display = 'none';
+                        seccionKioskos.style.display = 'none';
                     } else if (this.value === 'Empleado') {
                         seccionEmpleado.style.display = 'block';
                         seccionAlumno.style.display = 'none';
-                    } else {
+                        seccionKioskos.style.display = 'none';
+                    } else if(this.value === 'Kioskos') {
                         seccionAlumno.style.display = 'none';
                         seccionEmpleado.style.display = 'none';
+                        seccionKioskos.style.display = 'block';
+
                     }
                 });
             });

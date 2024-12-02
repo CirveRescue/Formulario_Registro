@@ -38,8 +38,11 @@ class SolicitudController extends Controller
         $nombreCompleto = $request->nombre . ' ' . $request->apellido_paterno . ' ' . $request->apellido_materno;
 
         //Verificar si el correo ya está registrado
-        $Valida_Placa = Vehiculo::where('Placa', $request->input('Placa'))->first();
-        $Usuario = Usuario::where('ID_Usuario', $Valida_Placa->ID_Usuario)->first();
+        $Valida_Placa = Vehiculo::where('Placa', $request->input('Placa'))
+    ->whereNotNull('Placa') // Asegura que la columna 'Placa' no sea nula
+    ->first();
+    $Usuario = Usuario::where('ID_Usuario', $Valida_Placa->ID_Usuario ?? 0)->first();
+
         if ($Valida_Placa) {
             return redirect()->back()->with('error', 'La placa ya se encuentra registrada al Usuario:'.' '. $Usuario->Nombre);
         }
